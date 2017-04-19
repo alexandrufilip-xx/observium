@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Alexandru Filip
+  description: Ansible role to install Observium on Ubuntu Trusty
+  company:
+  license: license (GPLv2, CC-BY, etc)
+  min_ansible_version: 2.2
+
+  platforms:
+   - name: Ubuntu
+     versions:
+      - trusty
+
+  categries:
+    - monitoring
+
+  galaxy_tags: []
+
+dependencies:
+   - { role: 'git+https://github.com/alexandrufilip/mysqldb,v1.0.0'}
