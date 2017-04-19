@@ -12,7 +12,7 @@ Ansible 2.2.*
 
 Role Variables
 --------------
-'''
+
 observium_db_host: localhost
 observium_db_user: observium_db_user
 observium_db_pass: observium_db_pass
@@ -23,8 +23,6 @@ observium_users:
   - name: Admin
     password: freeaccess
     level: 10
-'''
-
 
 Dependencies
 ------------
