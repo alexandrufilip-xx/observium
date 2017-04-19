@@ -1,0 +1,71 @@
+---
+# tasks file for observium
+
+- name: Install observium required packages.
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - "{{ observium_packages }}"
+
+# setup snmp
+- name: configure snmp
+  template:
+    src: snmp.conf.j2
+    dest: /etc/snmp/snmp.conf
+    owner: root
+    group: root
+    mode: 0644
+
+# Download latest Observium package and extract to /opt/observium
+- name: Download and extract latest Observium version
+  shell: wget http://www.observium.org/observium-community-latest.tar.gz | tar zxvf observium-community-latest.tar.gz -C /opt
+
+- name: Create logs directory
+  file: path=/opt/observium/logs state=directory owner="root" group="root" mode=0664
+
+- name: Create rrd directory
+  file: path=/opt/observium/rrd state=directory owner="www-data" group="www-data" mode=0777
+
+- name: set up the config.php file
+  template:
+    src: config.php.j2
+    dest: /opt/observium/config.php
+    owner: root
+    group: root
+    mode: 0644
+
+- name: populate mysql database
+  shell: /opt/observium/discovery.php -u
+
+- name: set up apache configuration
+  template:
+    src: 000-default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+    owner: root
+    group: root
+    mode: 0644
+    force: yes
+  notify: restart-apache2
+
+- name: enable php mcrypt
+  shell: php5enmod mcrypt
+
+- name: enable modrewrite
+  shell: a2enmod rewrite
+  notify: restart-apache2
+
+- name: add initial users
+  shell: /opt/observium/adduser.php "{{item.name}}" "{{item.password}}" "{{item.level}}"
+  with_items:
+    - "{{ observium_users }}"
+
+- name: add cron jobs
+  template:
+    src: crontab-observium.j2
+    dest: /etc/cron.d/observium
+    owner: root
+    group: root
+    mode: 0644

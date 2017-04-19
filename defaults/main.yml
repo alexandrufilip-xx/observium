@@ -1,0 +1,36 @@
+---
+# defaults file for observium
+observium_apache_servername: _
+observium_packages:
+  - libapache2-mod-php5
+  - php5-cli
+  - php5-mysql
+  - php5-gd
+  - php5-mcrypt
+  - php5-json
+  - php-pear
+  - snmp
+  - snmpd
+  - fping
+  - python-mysqldb
+  - rrdtool
+  - subversion
+  - whois
+  - mtr-tiny
+  - ipmitool
+  - graphviz
+  - imagemagick
+  - libvirt-bin
+  - snmp-mibs-downloader
+  - mysql-client
+
+observium_db_host: localhost
+observium_db_user: observium
+observium_db_pass: observium
+observium_db_name: observium
+observium_snmp_community: imagpt
+
+observium_users:
+  - name: Admin
+    password: freeaccess
+    level: 10

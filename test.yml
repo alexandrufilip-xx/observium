@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  vars:
+   # Since this is used in development environments only, we do not need to hide users and passwords.
+   # Configure mysql root password
+   mysql_root_password: root
+
+   # Define the databases to be present when the server starts
+   mysql_databases:
+    - name: observium
+      encoding: utf8
+      collation: utf8_unicode_ci
+
+   # Define users and privilegess
+   mysql_users:
+    - name: observium
+      host: "%"
+      password: observium
+      priv: "*.*:ALL"
+
+   observium_users:
+    - name: Admin
+      password: freeaccess
+      level: 10
+
+
+  roles:
+   - '.'

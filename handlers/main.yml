@@ -1,0 +1,7 @@
+---
+# handlers file for observium
+- name: restart-apache2
+  become: true
+  service: name=apache2 state=restarted
+  retries: 3
+  delay: 10
